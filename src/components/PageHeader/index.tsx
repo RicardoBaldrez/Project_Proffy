@@ -10,9 +10,15 @@ import './style.css';
 // Forma de declarar as propriedades que terão no nosso componente 
 interface PageHeaderProps {
     title: string;
+    description?: string; // description?: -> Dizendo que a propriedade description é opcional diferente da title 
 }
 
-// {props.children} -> mostra qual conteúdo foi escrito dentro do componente
+/**
+ *  {props.children} -> mostra qual conteúdo foi escrito dentro do componente
+ * 
+ *  Se a primeira informação for verdadeira/existir, inclua o que vem depois do AND(&&)
+ *  { props.description && <p>{props.description}</p> }
+ **/ 
 const PageHeader: React.FunctionComponent<PageHeaderProps> = (props) => { // Componente chamado PageHeader, ele é um function component de dentro do react e as propriedades que ele tem são essas(PageHeaderProps)
     return (
         <header className="page-header">
@@ -25,6 +31,7 @@ const PageHeader: React.FunctionComponent<PageHeaderProps> = (props) => { // Com
 
             <div className="header-content">
                 <strong>{props.title}</strong>
+                { props.description && <p>{ props.description }</p> }
 
                 {props.children}
             </div>
