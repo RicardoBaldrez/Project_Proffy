@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
+
+import api from '../../services/api';
 
 import logoImg from "../../assets/images/logo.svg"; // Criando uma variável js contendo o logo
 import landingImg from "../../assets/images/landing.svg";
@@ -11,6 +13,19 @@ import purpleHeartIcon from "../../assets/images/icons/purple-heart.svg";
 import './styles.css';
 
 function Landing() {
+    const [ totalConnections, setTotalConnections ] = useState(0); // usando 'estado' pois sempre que precisarmos ficar com um valor, utilizamos dessa forma
+
+    useEffect(() => {
+        api.get('connections').then(response => {
+            
+            const { total } = response.data;
+            
+            setTotalConnections(total);
+            
+        });
+        
+    }, []) // useEffect -> Primeiro param é um função e segundo param é um array de dependências(Passa-se as informações que quando forem alteradas, será executado a função do primeiro param, o valor vazio representa o carregamento da página, ou sej, quando carregar será feito uma requisição a api
+    
     return (
         <div id="page-landing">
             <div id="page-landing-content" className="container">
@@ -38,8 +53,7 @@ function Landing() {
                 </div>
 
                 <span className="total-connections">
-                    Total de 200 conexões já realizadas
-                    <img src={purpleHeartIcon} alt="Coração roxo" />
+                    Total de { totalConnections } conexões já realizadas <img src={purpleHeartIcon} alt="Coração roxo" />
                 </span>
             </div>
         </div>

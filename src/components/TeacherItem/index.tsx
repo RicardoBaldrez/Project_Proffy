@@ -1,39 +1,56 @@
 import React from 'react';
 
+import api from '../../services/api';
+
 import whatsAppIcon from '../../assets/images/icons/whatsapp.svg';
 
 import './style.css';
 
-function Teacheritem() {
+export interface Teacher {
+    id: number;
+    avatar: string;
+    bio: string;
+    cost: number;
+    name: string;
+    subject:string;
+    whatsapp: string;
+}
+
+interface TeacheritemProps {
+    teacher: Teacher;
+}
+
+const Teacheritem: React.FunctionComponent<TeacheritemProps> = ({ teacher }) => {
+    function createNewConnection() {
+        api.post('connections', {
+            user_id: teacher.id,
+        })
+    }
+
     return (
         <article className="teacher-item">
             <header>
-                <img src="https://avatars3.githubusercontent.com/u/35501635?s=460&u=619d01bbbfe8056664bbb5a511d9d70342941aa4&v=4" alt="Ricardo Barbosa" />
+                <img src={teacher.avatar} alt={teacher.avatar} />
                 <div>
-                    <strong>Ricardo Barbosa</strong>
-                    <span>Química</span>
+                    <strong>{teacher.name}</strong>
+                    <span>{teacher.subject}</span>
                 </div>
             </header>
 
-            <p>
-                Entusiasta das melhores tecnologias de química avançada.
-                <br />
-                <br />
-                Apaixonado por explodir coisas em laboratório e por muda a vida das pessoas através de experiências. Mas de 200 pessoas já passaram por uma das minhas explosões.
-            </p>
+            <p>{teacher.bio}</p>
 
             <footer>
                 <p>
                     Preço/hora
-                    <strong>R$80,00</strong>
+                    <strong>R$ {teacher.cost}</strong>
                 </p>
-                <button>
+                <a onClick={createNewConnection} href={`https://wa.me/${teacher.whatsapp}`} target="_blank">
                     <img src={whatsAppIcon} alt="WhatsApp" />
                     Entrar em contato
-                </button>
+                </a>
             </footer>
         </article>
-    )
+    );
 }
 
 export default Teacheritem;
